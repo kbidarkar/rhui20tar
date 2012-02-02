@@ -1,22 +1,22 @@
 
-thanks to sghai for sharing qpid_gen_cert script, which uses expect
+Thanks to sghai for sharing qpid_gen_cert script, which uses expect
 
+a) configure boto.cfg (auto check :need to implement)
+b) install argparse, paramiko, boto
 
+1) tar -cvf rhui202_installation.tar ./rhui20tar/
+2) place extract_iso_setup.sh and rhui202_installation.tar in any but same dir
+3) run extract_iso_setup.sh as root, pass <userid> and iso location ( forced to use roor user to mount iso)
+4) the above step will create a rhui20 dir in ~ location(/home/kbidarka/rhui20/,
+5) move to the ~/rhui20 location and run install_rhui_iso.py as the <userid> specified previously , pass region, ami-id
 
-1) configure boto.cfg (auto check :need to implement)
-2) install argparse
-
-git clone
-tar -cvf rhui202_installation.tar ./rhui20tar/
-place extract_iso_setup.sh and rhui202_installation.tar in any but same dir
-run extract_iso_setup.sh as root, pass <userid> and iso location ( forced to use roor user to mount iso)
-the above step will create a rhui20 dir in ~ location(/home/kbidarka/rhui20/, 
-move to the ~/rhui20 location and 
-run install_rhui_iso.py as the <userid> specified previously , pass region, ami-id
-
-If all good, installation may proceed till rhua and cds rpm creation , distribution and installed stage :)
+6) If all good, installation may proceed till rhua and cds rpm creation , distribution and installed stage :)
 [Note: answer file is populated automatically.]
 
-If all is well, proceed with transfering content_cert and syncing packages. :)
+7) If all is well, proceed with transfering content_cert and syncing packages. :)
 
-Tried and removed all hardcoded stuff, shout at me if find any hardcoded stuff 
+Tried and removed all hardcoded stuff, shout at me if find any hardcoded stuff
+
+The code was written with experimenting many things,
+Warning: Code is too stupid at many places, plz ignore:)
+Another code with cleaner implementation is already in progress :)
