@@ -376,7 +376,7 @@ for instance in reservation_rhua.instances:
     f_path = "/root/rhui20-iso.tar"
     rhui_lib.putfile(host_auto, p_file, l_path, f_path)  
     #Connecting to the rhua instance and formatting the devices (e.g : /dev/sdf)
-    command = 'tar -xvf /root/pulp_setup.tar ; tar -xvf /root/gen_certs.tar ; tar -xvf /root/rhui20-iso.tar ; setenforce 0 ; iptables -F'
+    command = 'tar -xvf /root/pulp_setup.tar ; tar -xvf /root/gen_certs.tar ; tar -xvf /root/rhui20-iso.tar ; iptables -F'
     print "\nUntaring the Pulp tar files : \n", command
     rhui_lib.remote_exe(host_auto, p_file, command)
 #    command = '/bin/rpm -Uvh http://download.fedora.redhat.com/pub/epel/beta/6/i386/epel-release-6-5.noarch.rpm'
@@ -503,7 +503,7 @@ for instance in reservation_cds.instances:
     print "\nChange key Permissions : \n", command
     rhui_lib.remote_exe(host_auto, p_file, command)
 
-    command = 'tar -xvf /root/pulp_setup.tar ; tar -xvf /root/rhui20-iso.tar ;setenforce 0 ; iptables -F'
+    command = 'tar -xvf /root/pulp_setup.tar ; tar -xvf /root/rhui20-iso.tar ; iptables -F'
     print "\nUntaring the Pulp tar files : \n", command
     rhui_lib.remote_exe(host_auto, p_file, command)
 
