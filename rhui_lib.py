@@ -1,13 +1,13 @@
+import sys
 try:
     import paramiko
 except ImportError:
     print "Sorry, you don't have the paramiko module installed, and this"
     print "script relies on it.  Please install or reconfigure paramiko"
     print "and try again."
-    
+    sys.exit()    
 import re
 import os 
-import sys
 import time
 
 

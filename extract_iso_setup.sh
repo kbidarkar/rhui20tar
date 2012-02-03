@@ -11,8 +11,10 @@ tar -cvf /root/rhui202_installation.tar $repo1
 #Setup rhui20 directory
 if [ ! -d /home/$userid/rhui20 ] ; then
     mkdir /home/$userid/rhui20
+    pushd /tmp > /dev/null
     tar -xvf /root/rhui202_installation.tar
-    cp -R /root/$repo1/ans_dist_bkp /root/$repo1/gen_certs.tar /root/$repo1/extract_conf.sh /root/$repo1/hostname.sh /root/$repo1/install_rhui_iso.py /root/$repo1/reset.sh /root/$repo1/rhui_lib.py /root/$repo1/run_distribute.sh /root/$repo1/qpid_cert_gen.sh /root/$repo1/amazon_ec2_lib.py /root/$repo1/amazon_ec2.py /root/$repo1/ans_dist_bkp/host.sh /root/$repo1/ans_dist_bkp/answers_file /home/$userid/rhui20
+    cp -R /tmp/$repo1/ans_dist_bkp /tmp/$repo1/gen_certs.tar /tmp/$repo1/extract_conf.sh /tmp/$repo1/hostname.sh /tmp/$repo1/install_rhui_iso.py /tmp/$repo1/reset.sh /tmp/$repo1/rhui_lib.py /tmp/$repo1/run_distribute.sh /tmp/$repo1/qpid_cert_gen.sh /tmp/$repo1/amazon_ec2_lib.py /tmp/$repo1/amazon_ec2.py /tmp/$repo1/ans_dist_bkp/host.sh /tmp/$repo1/ans_dist_bkp/answers_file /home/$userid/rhui20
+    popd > /dev/null
 else
     echo -e "\nrhui20 Directory already exists, skipping."
 fi

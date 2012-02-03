@@ -17,22 +17,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
+import sys
 try:
     import boto.ec2
 except ImportError:
     print "Sorry, you don't have the boto module installed, and this"
     print "script relies on it.  Please install or reconfigure boto- 2.0b3"
     print "and try again."
-
-
+    sys.exit()
 import rhui_lib
 import re
 import time
-import sys
 import os
 from subprocess import call
-
-
 
 print "Fetching the regions :\n"
 list_regions = boto.ec2.regions()
@@ -82,15 +79,7 @@ connect_ec2 = boto.ec2.connect_to_region(region_name)
        
 image_all = None
 imag_ids = connect_ec2.get_all_images()
-print "\nFollowing are the ec2-RHEL-images for the above selected region"
-print "\nRHEL 6.2 Images\n\n"
-for im in imag_ids:
-    det = im.location
-    if 'RHEL-6.2-Starter-EBS-x86_64' in str(det):
-        det1 = im.location
-        if 'Hourly2' or 'Access2' in str(det1):
-            print im.id, im.location
-image_all = chek_null(image_all, "\nPlease specify the common ami-id to be used for RHUA, CDS and Clients \n(e.g: [us-E] ami-7dea2614 / ) ami-id : ")
+image_all = chek_null(image_all, "\nPlease specify the common ami-id to be used for RHUA, CDS and Clients \n(e.g: [us-E] ami-4fd00526) ami-id : ")
 im_all = connect_ec2.get_image(image_all)
 im_rhua = im_cds = im_client = im_all
 print "\nFollowing is the image selected for launch:"
