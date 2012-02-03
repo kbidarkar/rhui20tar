@@ -17,13 +17,16 @@ else
     echo -e "\nrhui20 Directory already exists, skipping."
 fi
 
-#Mount rhui-iso and create rhui-iso.tar excluding SRPMS.
-umount /mnt/rhui-iso
+
+[ ! -d /root/old-isotar ] && mkdir -p /root/old-isotar
 pushd /home/$userid/rhui20 > /dev/null
-mv /home/$userid/rhui20/rhui20-iso.tar /home/$userid/rhui20/rhui20-iso-old/rhui20-iso-old-`date | awk -F" " '{print $4}'`.tar
-rm -rf ./rhui20-iso
+mv /home/$userid/rhui20/rhui20-iso.tar /root/old-isotar/rhui20-iso-old-`date | awk -F" " '{print $4}'`.tar
+mv ./rhui20-iso /tmp
 popd > /dev/null
 
+#Mount rhui-iso and create rhui-iso.tar excluding SRPMS.
+[ ! -d /mnt/rhui-iso ] && mkdir -p /mnt/rhui-iso
+umount /mnt/rhui-iso
 iso_name=`echo "$iso_loc" | awk -F/ '{print $NF}'`
 echo "iso name:" $iso_name
 mount -t iso9660 -o loop $iso_loc /mnt/rhui-iso/ ; touch /home/$userid/rhui20/$iso_name
@@ -36,7 +39,7 @@ mkdir rhui20-iso ; mv rhui20-iso.tar ./rhui20-iso
 popd > /dev/null
 
 pushd /home/$userid/rhui20/rhui20-iso > /dev/null
-tar -xvf rhui20-iso.tar ; rm -f rhui20-iso.tar
+tar -xvf rhui20-iso.tar ; rm rhui20-iso.tar
 popd > /dev/null
 
 pushd /home/$userid/rhui20 > /dev/null

@@ -81,6 +81,15 @@ region_name = chek_null(region_name, "\nPlease specify the Region name to connec
 connect_ec2 = boto.ec2.connect_to_region(region_name)
        
 image_all = None
+imag_ids = connect_ec2.get_all_images()
+print "\nFollowing are the ec2-RHEL-images for the above selected region"
+print "\nRHEL 6.2 Images\n\n"
+for im in imag_ids:
+    det = im.location
+    if 'RHEL-6.2-Starter-EBS-x86_64' in str(det):
+        det1 = im.location
+        if 'Hourly2' or 'Access2' in str(det1):
+            print im.id, im.location
 image_all = chek_null(image_all, "\nPlease specify the common ami-id to be used for RHUA, CDS and Clients \n(e.g: [us-E] ami-7dea2614 / ) ami-id : ")
 im_all = connect_ec2.get_image(image_all)
 im_rhua = im_cds = im_client = im_all
@@ -386,7 +395,7 @@ for instance in reservation_rhua.instances:
     command = 'mkfs.ext3 /dev/xvdl ; mkdir -p /var/lib/pulp ; chown apache.apache /var/lib/pulp ; chmod g+ws,o+t /var/lib/pulp ; mount -t ext3 /dev/xvdl /var/lib/pulp'
     print "\n\nCreating the directory structure: \n", command
     rhui_lib.remote_exe(host_auto, p_file, command)       
-    command = 'yum install wget screen vpnc rpm-build -y'
+    command = 'yum install wget screen vpnc -y'
     print "\nInstalling various rpms: \n", command
     rhui_lib.remote_exe(host_auto, p_file, command)
     command = '/bin/sh /root/hostname.sh'
