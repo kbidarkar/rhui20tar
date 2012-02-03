@@ -1,12 +1,18 @@
 
 Thanks to sghai for sharing qpid_gen_cert script, which uses expect
 
-a) configure boto.cfg (auto check :need to implement)
-b) install argparse, paramiko, boto
 
-1) tar -cvf rhui202_installation.tar ./rhui20tar/
-2) place extract_iso_setup.sh and rhui202_installation.tar in any but same dir
-3) run extract_iso_setup.sh as root, pass <userid> and iso location ( forced to use roor user to mount iso)
+a) configure boto.cfg (auto check :need to implement)
+b) install argparse, paramiko, boto modules
+
+1) Create security groups as, below. 
+Note: The upper and lower case need to precisely  match. 
+RHUA Security Group, 
+CDS Security Group, 
+Client Secuity Group
+2) Also enable  port 22, 80, 443, 3128(proxy), 5674(qpid) with source as 10.0.0.0/8 for each Security Group. 
+
+3) run extract_iso_setup.sh as root, pass <userid> and iso location ( forced to use root user to mount iso)
 4) the above step will create a rhui20 dir in ~ location(/home/kbidarka/rhui20/,
 5) move to the ~/rhui20 location and run install_rhui_iso.py as the <userid> specified previously , pass region, ami-id
 
