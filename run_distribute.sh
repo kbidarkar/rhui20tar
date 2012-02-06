@@ -1,5 +1,6 @@
 #!/bin/bash 
-chmod 600 /root/cloud-key*.pem
+#Distribute the rpms and install
+chmod 600 cloud_key
 rhui-installer /root/rhui20/answers_file
 pushd /tmp/rhui > /dev/null
 yum localinstall rh-rhua* -y --nogpgcheck
