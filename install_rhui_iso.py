@@ -78,7 +78,6 @@ region_name = chek_null(region_name, "\nPlease specify the Region name to connec
 connect_ec2 = boto.ec2.connect_to_region(region_name)
        
 image_all = None
-imag_ids = connect_ec2.get_all_images()
 image_all = chek_null(image_all, "\nPlease specify the common ami-id to be used for RHUA, CDS and Clients \n(e.g: [us-E] ami-4fd00526) ami-id : ")
 im_all = connect_ec2.get_image(image_all)
 im_rhua = im_cds = im_client = im_all
