@@ -1,4 +1,10 @@
 #!/bin/sh
+# Only root can run this script
+if [ "$(id -u)" != "0" ]; then
+   echo "This script must be run as root" 1>&2
+   exit 1
+fi
+
 echo -e "Please enter your userid"
 read userid
 echo -e "Please enter the iso_location"
@@ -6,15 +12,14 @@ read iso_loc
 echo -e "Please enter the full_path location of the rhui20tar repo"
 read repo1
 
-tar -cvf /root/rhui202_installation.tar $repo1
+[ ! -f $iso_loc ] && echo "The specified file is not found, please re-check." && exit 1
+[ ! -d $repo1 ] && echo "The specified directory is not found, please re-check." && exit 1
 
 #Setup rhui20 directory
 if [ ! -d /home/$userid/rhui20 ] ; then
     mkdir /home/$userid/rhui20
-    pushd /tmp > /dev/null
-    tar -xvf /root/rhui202_installation.tar
-    cp -R /tmp/$repo1/ans_dist_bkp /tmp/$repo1/gen_certs.tar /tmp/$repo1/extract_conf.sh /tmp/$repo1/hostname.sh /tmp/$repo1/install_rhui_iso.py /tmp/$repo1/reset.sh /tmp/$repo1/rhui_lib.py /tmp/$repo1/run_distribute.sh /tmp/$repo1/qpid_cert_gen.sh /tmp/$repo1/amazon_ec2_lib.py /tmp/$repo1/amazon_ec2.py /tmp/$repo1/ans_dist_bkp/host.sh /tmp/$repo1/ans_dist_bkp/answers_file /home/$userid/rhui20
-    popd > /dev/null
+    echo -e "cp -R $repo1/ans_dist_bkp $repo1/gen_certs.tar $repo1/extract_conf.sh $repo1/hostname.sh $repo1/install_rhui_iso.py $repo1/reset.sh $repo1/rhui_lib.py $repo1/run_distribute.sh $repo1/qpid_cert_gen.sh $repo1/amazon_ec2_lib.py $repo1/amazon_ec2.py $repo1/ans_dist_bkp/host.sh $repo1/ans_dist_bkp/answers_file /home/$userid/rhui20"
+    cp -R $repo1/ans_dist_bkp $repo1/gen_certs.tar $repo1/extract_conf.sh $repo1/hostname.sh $repo1/install_rhui_iso.py $repo1/reset.sh $repo1/rhui_lib.py $repo1/run_distribute.sh $repo1/qpid_cert_gen.sh $repo1/amazon_ec2_lib.py $repo1/amazon_ec2.py $repo1/ans_dist_bkp/host.sh $repo1/ans_dist_bkp/answers_file /home/$userid/rhui20
 else
     echo -e "\nrhui20 Directory already exists, skipping."
 fi
@@ -30,7 +35,7 @@ popd > /dev/null
 [ ! -d /mnt/rhui-iso ] && mkdir -p /mnt/rhui-iso
 umount /mnt/rhui-iso
 iso_name=`echo "$iso_loc" | awk -F/ '{print $NF}'`
-echo "iso name:" $iso_name
+echo -e "RHUI ISO Name:\n" $iso_name
 mount -t iso9660 -o loop $iso_loc /mnt/rhui-iso/ ; touch /home/$userid/rhui20/$iso_name
 pushd /mnt/rhui-iso > /dev/null
 tar --exclude=./SRPMS -cvf /home/$userid/rhui20/rhui20-iso.tar ./*
