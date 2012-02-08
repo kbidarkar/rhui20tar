@@ -381,6 +381,7 @@ for instance in reservation_rhua.instances:
 #    rhui_lib.remote_exe(host_auto, p_file, command)
 #Connecting to the rhua instance and formatting the devices (e.g : /dev/sdf)
     command = 'mkfs.ext3 /dev/xvdl ; mkdir -p /var/lib/pulp ; chown apache.apache /var/lib/pulp ; chmod g+ws,o+t /var/lib/pulp ; mount -t ext3 /dev/xvdl /var/lib/pulp'
+    #command = 'mkfs.ext3 /dev/xvdl'
     print "\n\nCreating the directory structure: \n", command
     rhui_lib.remote_exe(host_auto, p_file, command)       
     command = 'yum install wget screen vpnc -y'
@@ -394,6 +395,9 @@ for instance in reservation_rhua.instances:
     rhui_lib.remote_exe(host_auto, p_file, command)
     command = "cp /root/pulp.conf /etc/pulp/ ; mkdir -p /root/rhui20"
     print "\nPlacing the pulp.conf and client.conf file to desired location : \n", command
+    rhui_lib.remote_exe(host_auto, p_file, command)
+    command = "sed -i 's/^seeds:[ \t].*/seeds: localhost/' /etc/pulp/pulp.conf"
+    print "\nReplacing the seeds host to localhost for now : \n", command
     rhui_lib.remote_exe(host_auto, p_file, command)
     command = "cp /root/rhui-tools.conf /etc/rhui/"
     print "\nPlacing the rhui-tools.conf file to desired location : \n", command
