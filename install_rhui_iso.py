@@ -92,11 +92,9 @@ key_nam = chek_null(key_nam, "\nPlease specify the Key Name (e.g :- cloud-keyusw
 
 #Checking for all the files
 home_dir = os.path.expanduser("~")
-p1_file = key_nam + ".pem"
 file_list = ['rhui20/extract_conf.sh','rhui20/rhui20-iso.tar',
 'rhui20/answers_file', 'rhui20/gen_certs.tar', 'rhui20/run_distribute.sh',
 'rhui20/host.sh', 'rhui20/hostname.sh', 'rhui20/qpid_cert_gen.sh']
-file_list.append(p1_file)
 list_sz = len(file_list)
 rhui_lib.chek_files(file_list, list_sz)
 
@@ -107,7 +105,13 @@ reservation_cds = im_cds.run(min_count='2', max_count='2', key_name=key_nam, pla
 reservation_client = im_client.run(min_count='1', max_count='1', key_name=key_nam, placement=reg_name, security_groups=['Client Security Group'], instance_type='m1.large')
 
 username = 'root'
-p_file = home_dir + "/" + key_nam + ".pem"   
+
+find = os.popen('find %s -name %s.pem' % (home_dir, key_nam))
+p_file = find.readline().strip()
+find.close()
+
+print "Using key: %s" % p_file
+
 
 def clean_inst(nod):
     for instance in nod.instances:
@@ -310,7 +314,9 @@ for instance in reservation_rhua.instances:
     hosts_dns2_name.append(dns2) 
 
 def run_distribute_file(dist_file):
-    p_file = home_dir + "/" + key_nam + ".pem"
+    find = os.popen('find %s -name %s.pem' % (home_dir, key_nam))
+    p_file = find.readline().strip()
+    find.close()
     s_text = ['root@cds1', 'root@cds2']
     d_text = hosts_dns1_name
     inpu_file = home_dir + dist_file
@@ -469,7 +475,9 @@ def answers_file(ans_file):
         rhui_lib.answers_replace(stext, dtext, inpu_file)
         
     print "\n\nWorking again with RHUA instance to upload the updated answers.sample file"
-    p_file = home_dir + "/" + key_nam + ".pem"   
+    find = os.popen('find %s -name %s.pem' % (home_dir, key_nam))
+    p_file = find.readline().strip()
+    find.close()
     for instance in reservation_rhua.instances:
         host_auto = instance.dns_name
         l_path = home_dir + ans_file
